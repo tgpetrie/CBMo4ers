@@ -3,3 +3,4 @@ flask-cors
 gunicorn
 aiohttp
 apscheduler
+coinbase==2.1.0
