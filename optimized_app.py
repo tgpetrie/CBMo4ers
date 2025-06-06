@@ -5,9 +5,17 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import aiohttp
 import asyncio
 import threading
+import os
+from coinbase.wallet.client import Client
 
 app = Flask(__name__)
 CORS(app)
+
+# Coinbase authenticated client using API credentials
+coinbase_client = Client(
+    os.getenv('COINBASE_API_KEY'),
+    os.getenv('COINBASE_API_SECRET')
+)
 
 live_prices = {}
 snapshots_3min = {}
@@ -93,6 +101,24 @@ def top_gainers():
 @app.route('/24h-gainers')
 def top_24h():
     return jsonify(cached_24h)
+
+# Authenticated Coinbase example route
+@app.route('/account-balance')
+def account_balance():
+    """Return balances for all Coinbase accounts."""
+    try:
+        accounts = coinbase_client.get_accounts()
+        balances = [
+            {
+                "id": acc["id"],
+                "currency": acc["balance"]["currency"],
+                "balance": acc["balance"]["amount"],
+            }
+            for acc in accounts["data"]
+        ]
+        return jsonify(balances)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Background job setup
 scheduler = BackgroundScheduler()
