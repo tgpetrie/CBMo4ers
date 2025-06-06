@@ -1,0 +1,39 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {}
+}# Create a .devcontainer configuration to auto-setup Python, Node, and port forwarding for GitHub Codespaces
+import os
+
+devcontainer_dir = "/mnt/data/.devcontainer"
+os.makedirs(devcontainer_dir, exist_ok=True)
+
+devcontainer_json = {
+    "name": "Crypto AI Trader Dev",
+    "image": "mcr.microsoft.com/devcontainers/javascript-python:1-3.11-bullseye",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "18"
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.11"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    },
+    "forwardPorts": [5055, 3000],
+    "postCreateCommand": "cd backend && pip install -r requirements.txt && cd ../frontend && npm install",
+    "remoteUser": "vscode"
+}
+
+devcontainer_json_path = os.path.join(devcontainer_dir, "devcontainer.json")
+
+import json
+with open(devcontainer_json_path, "w") as f:
+    json.dump(devcontainer_json, f, indent=2)
+
+devcontainer_json_path
