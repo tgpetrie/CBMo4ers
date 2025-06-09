@@ -1,13 +1,23 @@
-# Optimized Flask Backend Dockerfile
+# Use a slim Python image for the backend
 FROM python:3.10-slim
 
+# Set working directory
 WORKDIR /app
-COPY optimized_app.py /app
-COPY requirements.txt /app
+
+# Install Python dependencies
+COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "optimized_app:app"]
+# Copy backend source code
+COPY backend/ .
 
-# Change directory to the backend folder
-RUN cd ~/Desktop/coinbase-tracker-complete/backend
+# Set Flask environment variables
+ENV FLASK_APP=run.py
+ENV FLASK_ENV=development
+ENV FLASK_RUN_PORT=8001
+
+# Expose the port
+EXPOSE 8001
+
+# Run the Flask development server (replace with Gunicorn for production)
+CMD ["flask", "run", "--host=0.0.0.0"]

@@ -96,9 +96,16 @@ def top_24h():
 
 # Background job setup
 scheduler = BackgroundScheduler()
+# snapshot_updater runs every 3 minutes
 scheduler.add_job(lambda: asyncio.run(snapshot_updater()), 'interval', minutes=3)
+# cache 24h gainers every 60s
 scheduler.add_job(lambda: asyncio.run(cache_24h_gainers()), 'interval', seconds=60)
+# start scheduler
 scheduler.start()
+
+# initial run to populate snapshots immediately
+asyncio.run(snapshot_updater())
+asyncio.run(cache_24h_gainers())
 
 loop = asyncio.new_event_loop()
 threading.Thread(target=run_async_tasks, args=(loop,), daemon=True).start()

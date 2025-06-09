@@ -4,19 +4,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: coinbase-backend
     ports:
-      - "8000:8000"
+      - "8001:8001"
+    env_file:
+      - ./backend/.env
     restart: always
-    volumes:
-      - .:/app
 
   frontend:
-    build:
-      context: ./frontend
-    command: npm run dev
-    ports:
-      - "5173:5173"
+    image: node:18-alpine
+    container_name: coinbase-frontend
+    working_dir: /app
     volumes:
       - ./frontend:/app
-    working_dir: /app
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev"
     restart: always

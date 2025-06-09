@@ -1,5 +1,6 @@
 import app.ws_client       # ← add this line so ws_client.py runs on startup
 from flask import Flask, Blueprint, jsonify
+from flask_cors import CORS
 from app.config.config import get_config_by_name, Config   # <-- import Config
 from app.initialize_functions import initialize_route, initialize_db, initialize_swagger
 
@@ -14,6 +15,8 @@ def create_app(config=None) -> Flask:
         A Flask application instance.
     """
     app = Flask(__name__)
+    # enable CORS for all routes
+    CORS(app)
 
     # Always load base Config so SQLALCHEMY_DATABASE_URI is set
     app.config.from_object(Config)
