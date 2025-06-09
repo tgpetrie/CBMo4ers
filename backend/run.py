@@ -9,8 +9,5 @@ config=os.getenv('FLASK_ENV') or 'development'
 app = create_app(config)
 
 if __name__ == "__main__":
-    if config == 'development':
-        app.run(debug=True)
-    else:
-        from werkzeug.serving import run_simple
-        run_simple('0.0.0.0', 5000, app)
+    # bind to port 8001 instead of default 8000
+    app.run(host="0.0.0.0", port=8001, debug=(config == 'development'))

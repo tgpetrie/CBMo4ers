@@ -1,34 +1,24 @@
-class BaseConfig:
-    """Base configuration."""
-    DEBUG = False
-    TESTING = False
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = 'your-secret-key'
+import os
 
-class DevelopmentConfig(BaseConfig):
+class Config:
+    """Base configuration."""
+    SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///:memory:")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class DevelopmentConfig(Config):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+    # if you prefer a file-based DB in dev, you can override:
+    # SQLALCHEMY_DATABASE_URI = os.getenv("DEV_DATABASE_URL", "sqlite:///dev.db")
 
-class TestingConfig(BaseConfig):
-    """Testing configuration."""
-    DEBUG = True
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
-
-class ProductionConfig(BaseConfig):
+class ProductionConfig(Config):
     """Production configuration."""
-    DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///production.db'
+    # set your real production DB URI in the env var DATABASE_URL
+    pass
 
-
-def get_config_by_name(config_name):
-    """ Get config by name """
-    if config_name == 'development':
-        return DevelopmentConfig()
-    elif config_name == 'production':
-        return ProductionConfig()
-    elif config_name == 'testing':
-        return TestingConfig()
-    else:
-        return DevelopmentConfig()
+def get_config_by_name(name: str):
+    return {
+        "development": DevelopmentConfig,
+        "production":  ProductionConfig,
+    }[name]
