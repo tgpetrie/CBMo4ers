@@ -10,7 +10,7 @@ export default function App() {
   return (
     <div className="min-h-screen px-5 py-6 text-white bg-gray-900">
       <div className="max-w-5xl pb-6 mx-auto">
-        <div className="p-1 text-xs tracking-wide text-gray-500 uppercase">
+        <div className="p-1 text-xs tracking-wide text-center text-gray-500 uppercase">
           leaderboard
         </div>
         
@@ -30,7 +30,7 @@ export default function App() {
             </div>
           </div>
           
-          <div className="px-8 py-4 border-t border-gray-700">
+          <div className="px-8 py-4 border-t border-gray-700 flex justify-center">
             <button className="flex items-center text-sm font-medium text-gray-400 hover:text-white">
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>

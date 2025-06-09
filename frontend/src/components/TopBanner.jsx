@@ -20,7 +20,7 @@ export default function TopBanner() {
 
   return (
     <div className="bg-gradient-to-r from-gray-900/90 to-indigo-900/80 text-white overflow-hidden whitespace-nowrap py-3 border-b border-indigo-800/30 backdrop-blur-sm sticky top-0 z-50">
-      <div className="animate-marquee flex space-x-8">
+      <div className="animate-marquee flex justify-center space-x-8">
         {coins.map((coin, idx) => (
           <a
             key={idx}
