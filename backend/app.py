@@ -111,4 +111,4 @@ loop = asyncio.new_event_loop()
 threading.Thread(target=run_async_tasks, args=(loop,), daemon=True).start()
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=8001)

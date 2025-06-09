@@ -116,23 +116,23 @@ export default function LosersTable() {
           Refresh Now
         </button>
       </div>
-      <table className="w-full text-center">
+      <table className="w-full text-center table-fixed"> {/* Added table-fixed for more control over column widths */}
         <thead className="mb-4 text-xs tracking-wider text-gray-400 uppercase border-b border-gray-800">
           <tr>
-            <th className="w-10 py-3 text-center">#</th>
-            <th className="px-1 py-3 text-center">Asset</th>
-            <th className="px-1 py-3 text-center">Current</th>
-            <th className="px-1 py-3 text-center">3m Ago</th>
-            <th className="px-1 py-3 text-center">Loss %</th>
+            <th className="w-16 py-3 text-center">#</th> {/* Increased width for # column */}
+            <th className="w-1/4 px-2 py-3 text-center">Asset</th> {/* Adjusted width for Asset column */}
+            <th className="w-1/4 px-2 py-3 text-center">Current</th> {/* Adjusted width for Current column */}
+            <th className="w-1/4 px-2 py-3 text-center">3m Ago</th> {/* Adjusted width for 3m Ago column */}
+            <th className="w-1/4 px-2 py-3 text-center">Loss %</th> {/* Adjusted width for Loss % column */}
           </tr>
         </thead>
         <tbody>
           {coins.map(({ symbol, current, previous, gain }, idx) => (
             <tr 
               key={symbol}
-              className={`border-b border-gray-800 hover:bg-gray-800/30 ${idx % 2 === 0 ? 'bg-gray-800/20' : ''}`}>
-              <td className="w-10 py-4 text-center font-medium text-gray-300">{idx + 1}</td>
-              <td className="px-1 py-4">
+              className={`border-b border-gray-800 hover:bg-gray-800/30 ${idx % 2 === 0 ? 'bg-gray-800/20' : ''} whitespace-nowrap`}> {/* Added whitespace-nowrap to prevent text wrapping */}
+              <td className="w-16 py-4 text-center font-medium text-gray-300">{idx + 1}</td>
+              <td className="px-2 py-4"> {/* Adjusted padding */}
                 <div className="flex items-center justify-center">
                   <div className="flex items-center justify-center w-8 h-8 mr-3 overflow-hidden rounded-full bg-gradient-to-br from-red-500 to-pink-600">
                     <img
@@ -148,12 +148,12 @@ export default function LosersTable() {
                   <span className="font-semibold text-white">{symbol}</span>
                 </div>
               </td>
-              <td className={`py-4 px-1 text-center font-mono ${flashedItems[`${symbol}-current`] ? 'bg-blue-900/40 rounded transition-colors' : 'text-white'}`}>
-                ${current.toFixed(2)}
+              <td className={`py-4 px-2 text-center font-mono ${flashedItems[`${symbol}-current`] ? 'bg-blue-900/40 rounded transition-colors' : 'text-white'}`}> {/* Adjusted padding */}
+                ${current}
               </td>
-              <td className="px-1 py-4 font-mono text-center text-gray-400">${previous.toFixed(2)}</td>
-              <td className={`py-4 px-1 text-center font-bold font-mono text-red-400 ${flashedItems[`${symbol}-gain`] ? 'bg-red-900/40 rounded transition-colors' : ''}`}>
-                {gain.toFixed(2)}%
+              <td className="py-4 px-2 text-center font-mono text-gray-400">${previous}</td> {/* Adjusted padding */}
+              <td className={`py-4 px-2 text-center font-mono ${flashedItems[`${symbol}-gain`] ? 'bg-red-900/40 rounded transition-colors' : 'text-red-400'}`}> {/* Adjusted padding */}
+                {gain}%
               </td>
             </tr>
           ))}

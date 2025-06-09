@@ -9,7 +9,7 @@ const formattedDate = `${String(today.getMonth() + 1).padStart(2, '0')}/${String
 export default function App() {
   return (
     <div className="min-h-screen px-5 py-6 text-white bg-gray-900">
-      <div className="max-w-5xl pb-6 mx-auto">
+      <div className="max-w-7xl pb-6 mx-auto"> {/* Changed max-w-5xl to max-w-7xl for wider layout */}
         <div className="p-1 text-xs tracking-wide text-center text-gray-500 uppercase">
           leaderboard
         </div>
