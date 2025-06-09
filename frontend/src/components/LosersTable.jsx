@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function GainersTable() {
+export default function LosersTable() {
   const [coins, setCoins] = useState([]);
   const [prevCoins, setPrevCoins] = useState([]);
   const [countdown, setCountdown] = useState(30);
@@ -9,10 +9,10 @@ export default function GainersTable() {
   const [isLoading, setIsLoading] = useState(false);
   const [flashedItems, setFlashedItems] = useState({});
   
-  const fetchTopMovers = async () => {
+  const fetchTopLosers = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get('http://localhost:8001/top-gainers');
+      const res = await axios.get('http://localhost:8001/top-losers');
       // Store previous coins for comparison
       setPrevCoins(coins);
       setCoins(res.data);
@@ -41,14 +41,14 @@ export default function GainersTable() {
       setCountdown(30);
       setLastUpdated(new Date());
     } catch (err) {
-      console.error('Failed to fetch 3min gainers', err);
+      console.error('Failed to fetch top losers', err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchTopMovers();
+    fetchTopLosers();
     
     // Update countdown every second
     const countdownInterval = setInterval(() => {
@@ -61,7 +61,7 @@ export default function GainersTable() {
     }, 1000);
     
     // Fetch new data every 30 seconds
-    const fetchInterval = setInterval(fetchTopMovers, 30000);
+    const fetchInterval = setInterval(fetchTopLosers, 30000);
     
     return () => {
       clearInterval(countdownInterval);
@@ -76,20 +76,20 @@ export default function GainersTable() {
   return (
     <div className="p-6 bg-gray-800/50 shadow-lg backdrop-blur-sm rounded-xl h-full border border-gray-700/30">
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-bold text-white">Top Gainers</h2>
-        <div className="px-4 py-2 rounded-lg bg-green-900/30">
-          <span className="text-sm text-green-300">UPDATES IN</span>
+        <h2 className="text-2xl font-bold text-white">Top Losers</h2>
+        <div className="px-4 py-2 rounded-lg bg-red-900/30">
+          <span className="text-sm text-red-300">UPDATES IN</span>
           <div className="flex mt-1 space-x-3">
             <div className="flex flex-col items-center">
-              <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded-lg bg-green-900/50">0</div>
+              <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded-lg bg-red-900/50">0</div>
               <span className="mt-1 text-xs text-gray-400">Hour</span>
             </div>
             <div className="flex flex-col items-center">
-              <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded-lg bg-green-900/50">{minutes}</div>
+              <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded-lg bg-red-900/50">{minutes}</div>
               <span className="mt-1 text-xs text-gray-400">Min</span>
             </div>
             <div className="flex flex-col items-center">
-              <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded-lg bg-green-900/50">{seconds < 10 ? `0${seconds}` : seconds}</div>
+              <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded-lg bg-red-900/50">{seconds < 10 ? `0${seconds}` : seconds}</div>
               <span className="mt-1 text-xs text-gray-400">Sec</span>
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function GainersTable() {
           <div className="flex items-center text-xs text-gray-400">
             <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
             {isLoading && (
-              <svg className="w-4 h-4 ml-2 text-green-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 ml-2 text-red-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -109,8 +109,8 @@ export default function GainersTable() {
           </div>
         )}
         <button 
-          onClick={fetchTopMovers} 
-          className="px-3 py-1 text-xs text-white transition-colors bg-green-700 rounded-md hover:bg-green-600 focus:outline-none"
+          onClick={fetchTopLosers} 
+          className="px-3 py-1 text-xs text-white transition-colors bg-red-700 rounded-md hover:bg-red-600 focus:outline-none"
           disabled={isLoading}
         >
           Refresh Now
@@ -123,7 +123,7 @@ export default function GainersTable() {
             <th className="px-1 py-3">Asset</th>
             <th className="px-1 py-3 text-right">Current</th>
             <th className="px-1 py-3 text-right">3m Ago</th>
-            <th className="px-1 py-3 pr-4 text-right">Gain %</th>
+            <th className="px-1 py-3 pr-4 text-right">Loss %</th>
           </tr>
         </thead>
         <tbody>
@@ -134,7 +134,7 @@ export default function GainersTable() {
               <td className="w-10 py-4 pl-3 font-medium text-gray-300">{idx + 1}</td>
               <td className="px-1 py-4">
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-8 h-8 mr-3 overflow-hidden rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
+                  <div className="flex items-center justify-center w-8 h-8 mr-3 overflow-hidden rounded-full bg-gradient-to-br from-red-500 to-pink-600">
                     <img
                       src={`https://cryptoicons.org/api/icon/${symbol.toLowerCase()}/32`}
                       alt={`${symbol} icon`}
@@ -152,10 +152,8 @@ export default function GainersTable() {
                 ${current.toFixed(2)}
               </td>
               <td className="px-1 py-4 font-mono text-right text-gray-400">${previous.toFixed(2)}</td>
-              <td className={`py-4 px-1 text-right pr-4 font-bold font-mono 
-                ${gain > 0 ? 'text-green-400' : 'text-red-400'} 
-                ${flashedItems[`${symbol}-gain`] ? 'bg-purple-900/40 rounded transition-colors' : ''}`}>
-                {gain > 0 ? '+' : ''}{gain.toFixed(2)}%
+              <td className={`py-4 px-1 text-right pr-4 font-bold font-mono text-red-400 ${flashedItems[`${symbol}-gain`] ? 'bg-red-900/40 rounded transition-colors' : ''}`}>
+                {gain.toFixed(2)}%
               </td>
             </tr>
           ))}
